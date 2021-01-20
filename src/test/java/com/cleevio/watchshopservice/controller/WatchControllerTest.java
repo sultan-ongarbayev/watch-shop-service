@@ -93,6 +93,98 @@ public class WatchControllerTest {
     }
 
     @Test
+    public void postWatch_validationFailed_emptyTitle() throws Exception {
+        // empty title
+        String title = "";
+        String description = "description";
+        int price = 100;
+        String fountainImageBase64 = "base64FountainImage";
+
+        WatchDto requestDto = new WatchDto();
+        requestDto.setTitle(title);
+        requestDto.setDescription(description);
+        requestDto.setPrice(String.valueOf(price));
+        requestDto.setFountainImageBase64(fountainImageBase64);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestJson = objectMapper.writeValueAsString(requestDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/watch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void postWatch_validationFailed_emptyDescription() throws Exception {
+        String title = "title";
+        // empty description
+        String description = "";
+        int price = 100;
+        String fountainImageBase64 = "base64FountainImage";
+
+        WatchDto requestDto = new WatchDto();
+        requestDto.setTitle(title);
+        requestDto.setDescription(description);
+        requestDto.setPrice(String.valueOf(price));
+        requestDto.setFountainImageBase64(fountainImageBase64);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestJson = objectMapper.writeValueAsString(requestDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/watch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void postWatch_validationFailed_emptyFountainImageBase64() throws Exception {
+        String title = "title";
+        String description = "";
+        int price = 100;
+        // empty description
+        String fountainImageBase64 = "";
+
+        WatchDto requestDto = new WatchDto();
+        requestDto.setTitle(title);
+        requestDto.setDescription(description);
+        requestDto.setPrice(String.valueOf(price));
+        requestDto.setFountainImageBase64(fountainImageBase64);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestJson = objectMapper.writeValueAsString(requestDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/watch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void postWatch_validationFailed_malformedPrice() throws Exception {
+        String title = "title";
+        String description = "";
+        // malformed price text
+        String price = "123abc";
+        String fountainImageBase64 = "base64FountainImage";
+
+        WatchDto requestDto = new WatchDto();
+        requestDto.setTitle(title);
+        requestDto.setDescription(description);
+        requestDto.setPrice(price);
+        requestDto.setFountainImageBase64(fountainImageBase64);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestJson = objectMapper.writeValueAsString(requestDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/watch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
     public void getAllWatchesTest_json() throws Exception {
         Watch watch1 = new Watch();
         watch1.setWatchId(1L);

@@ -3,6 +3,7 @@ package com.cleevio.watchshopservice.service.impl;
 import com.cleevio.watchshopservice.dao.WatchDao;
 import com.cleevio.watchshopservice.model.Watch;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class WatchServiceImplTest {
 
     @Autowired
     private WatchDao watchDaoMock;
+
+    @After
+    public void resetMocks() {
+        EasyMock.reset(watchDaoMock);
+    }
 
     @Test
     public void createWatch() {
