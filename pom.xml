@@ -21,6 +21,7 @@
         <commons-lang3.version>3.11</commons-lang3.version>
         <junit.version>4.13.1</junit.version>
         <easymock.version>4.2</easymock.version>
+        <jackson-dataformat-xml.version>2.10.1</jackson-dataformat-xml.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +61,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>${jackson-dataformat-xml.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>
