@@ -4,6 +4,7 @@ import com.cleevio.watchshopservice.controller.dto.WatchDto;
 import com.cleevio.watchshopservice.controller.dto.WatchListDto;
 import com.cleevio.watchshopservice.model.Watch;
 import com.cleevio.watchshopservice.service.WatchService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/watch")
+@Slf4j
 public class WatchController {
 
     @Autowired
@@ -36,6 +38,7 @@ public class WatchController {
      */
     @PostMapping
     public ResponseEntity<Void> createWatch(@RequestBody WatchDto request) {
+        log.trace("Create watch request received, body = {}", request);
         if (!validateRequest(request)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -52,6 +55,7 @@ public class WatchController {
      */
     @GetMapping(produces = {"application/json", "application/xml"})
     public ResponseEntity<WatchListDto> listWatches() {
+        log.trace("List watches request received");
         List<Watch> watches = watchService.findAllWatches();
         WatchListDto response = new WatchListDto();
         List<WatchDto> watchDtos = watches.stream()
@@ -63,19 +67,23 @@ public class WatchController {
 
     private boolean validateRequest(WatchDto request) {
         if (StringUtils.isEmpty(request.getTitle())) {
+            log.debug("Request's title attribute is empty");
             return false;
         }
 
         if (StringUtils.isEmpty(request.getDescription())) {
+            log.debug("Request's description attribute is empty");
             return false;
         }
 
         // price must be integer, not decimal
         if (!StringUtils.isNumeric(request.getPrice())) {
+            log.debug("Request's price attribute is malformed");
             return false;
         }
 
         if (StringUtils.isEmpty(request.getFountainImageBase64())) {
+            log.debug("Request's fountainImageBase64 attribute is empty");
             return false;
         }
 
