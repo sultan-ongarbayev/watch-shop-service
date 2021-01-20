@@ -1,30 +1,41 @@
 package com.cleevio.watchshopservice.controller;
 
-import com.cleevio.watchshopservice.controller.dto.CreateWatchDto;
+import com.cleevio.watchshopservice.controller.dto.WatchDto;
+import com.cleevio.watchshopservice.controller.dto.WatchListDto;
 import com.cleevio.watchshopservice.model.Watch;
 import com.cleevio.watchshopservice.service.WatchService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Watch Rest API controller.
+ */
 @RestController
+@RequestMapping("/watch")
 public class WatchController {
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     @Autowired
     private WatchService watchService;
 
-    @PostMapping("/watch")
-    public ResponseEntity<Void> createWatch(@RequestBody CreateWatchDto request) {
+    /**
+     * Creates new watch and saves it in database.
+     *
+     * @param request request body
+     * @return HTTP status, empty response body
+     */
+    @PostMapping
+    public ResponseEntity<Void> createWatch(@RequestBody WatchDto request) {
         if (!validateRequest(request)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -34,7 +45,23 @@ public class WatchController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    private boolean validateRequest(CreateWatchDto request) {
+    /**
+     * Returns all watches stored in database.
+     *
+     * @return list of all watches
+     */
+    @GetMapping(produces = {"application/json", "application/xml"})
+    public ResponseEntity<WatchListDto> listWatches() {
+        List<Watch> watches = watchService.findAllWatches();
+        WatchListDto response = new WatchListDto();
+        List<WatchDto> watchDtos = watches.stream()
+                .map(this::convertModelToDto)
+                .collect(Collectors.toList());
+        response.setWatches(watchDtos);
+        return ResponseEntity.ok(response);
+    }
+
+    private boolean validateRequest(WatchDto request) {
         if (StringUtils.isEmpty(request.getTitle())) {
             return false;
         }
@@ -55,12 +82,21 @@ public class WatchController {
         return true;
     }
 
-    private Watch convertDtoToModel(CreateWatchDto dto) {
+    private Watch convertDtoToModel(WatchDto dto) {
         Watch model = new Watch();
         model.setTitle(dto.getTitle());
         model.setDescription(dto.getDescription());
         model.setPrice(new BigInteger(dto.getPrice()));
         model.setFountainImageBase64(dto.getFountainImageBase64());
         return model;
+    }
+
+    private WatchDto convertModelToDto(Watch model) {
+        WatchDto dto = new WatchDto();
+        dto.setTitle(model.getTitle());
+        dto.setDescription(model.getDescription());
+        dto.setPrice(model.getPrice().toString());
+        dto.setFountainImageBase64(model.getFountainImageBase64());
+        return dto;
     }
 }

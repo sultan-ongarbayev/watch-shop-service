@@ -1,12 +1,13 @@
 package com.cleevio.watchshopservice.controller.dto;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.Data;
 
 /**
  * Create watch DTO object.
  */
 @Data
-public class CreateWatchDto {
+public class WatchDto {
 
     /**
      * Watch title.

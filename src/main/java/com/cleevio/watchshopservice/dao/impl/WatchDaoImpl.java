@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * Implementation of {@link WatchDao}.
@@ -19,5 +20,10 @@ public class WatchDaoImpl implements WatchDao {
     @Override
     public void createWatch(Watch watch) {
         em.persist(watch);
+    }
+
+    @Override
+    public List<Watch> findAllWatches() {
+        return em.createQuery("SELECT w FROM Watch w", Watch.class).getResultList();
     }
 }
