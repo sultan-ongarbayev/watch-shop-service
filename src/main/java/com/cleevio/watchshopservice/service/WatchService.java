@@ -16,5 +16,10 @@ public interface WatchService {
      */
     void createWatch(Watch watch);
 
+    /**
+     * Returns all watches.
+     *
+     * @return list of watches
+     */
     List<Watch> findAllWatches();
 }
