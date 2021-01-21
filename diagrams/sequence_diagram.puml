@@ -1,0 +1,23 @@
+@startuml
+
+participant client as "Client"
+participant controller as "WatchController"
+participant service as "WatchServiceImpl"
+database database as "Database"
+
+client -> controller: **[POST]** /watch
+activate client
+activate controller
+controller -> service: **[Java]** createWatch
+activate service
+service -> database: **[SQL]** insert into watches
+activate database
+database --> service
+deactivate database
+service --> controller
+deactivate service
+controller --> client: HTTP 201
+deactivate controller
+deactivate client
+
+@enduml

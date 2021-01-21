@@ -53,10 +53,14 @@ database credentials on server insted of code.
           initialSize="2"
           maxWait="10000"/>
 ```
-####context.xml
+#### context.xml
 ```xml
 <ResourceLink name="jdbc/WatchShopDatabase"
               global="jdbc/WatchShopDatabase"
               auth="Container"
               type="javax.sql.DataSource"/>
 ```
+
+Sequence diagram
+----------------
+![diagram](./diagrams/sequence_diagram.png)
