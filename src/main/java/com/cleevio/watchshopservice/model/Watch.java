@@ -1,7 +1,9 @@
 package com.cleevio.watchshopservice.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +20,8 @@ import java.math.BigInteger;
 @Table(name = "watches")
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 public class Watch {
 
     /**
